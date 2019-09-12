@@ -42,3 +42,10 @@ train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
 test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           batch_size=batch_size,
                                           shuffle=False)
+##################################
+###CONFLICT ZONE 2
+model = LeNet5()
+##################################
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum = 0.9)
+training_accuracy = []
