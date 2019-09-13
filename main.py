@@ -10,6 +10,7 @@ import torchvision.datasets
 import torchvision.transforms
 from torch.autograd import Variable
 from sklearn.metrics import accuracy_score
+import sys
 
 #USER DEFINED IMPORTS
 from models.lenet5 import LeNet5
@@ -24,7 +25,10 @@ num_epochs = 2
 #################################
 ###CONFLICT ZONE 1
 if args.mode==0: transformImg = torchvision.transforms.Compose([torchvision.transforms.ToTensor() ])
-if args.mode==1: transformImg = torchvision.transforms.Compose([torchvision.transforms.ToTensor(),torchvision.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+elif args.mode==1: transformImg = torchvision.transforms.Compose([torchvision.transforms.ToTensor(),torchvision.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+else:
+    print("Unidentified mode.")
+    sys.exit()
 #################################
 train_dataset = torchvision.datasets.MNIST(root='../../data',
                                            train=True,
@@ -45,7 +49,7 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
 ##################################
 ###CONFLICT ZONE 2
 if args.mode==0: model = FCNet()
-if args.mode==1: model = LeNet5()
+else: model = LeNet5()
 ##################################
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum = 0.9)
@@ -55,9 +59,8 @@ for epoch in range(num_epochs):
     print("Epoch:", epoch)
     for batch_num, train_batch in enumerate(train_loader):
         images, labels = train_batch
-        if args.mode == 0: img = images.reshape(-1, 28 * 28)
-        if args.mode == 1: img = images.reshape(-1, 1, 28, 28)
         ############################
+        img = images.reshape(-1, 28 * 28) if args.mode == 0 else images.reshape(-1, 1, 28, 28)
         inputs = Variable(img)
         ############################
         targets = Variable(labels)
@@ -72,9 +75,8 @@ for epoch in range(num_epochs):
     for batch_num, training_batch in enumerate(train_loader):
         num_batches += 1
         images, labels = training_batch
-        if args.mode == 0: img = images.reshape(-1, 28 * 28)
-        if args.mode == 1: img = images.reshape(-1, 1, 28, 28)
         ##############################
+        img = images.reshape(-1, 28 * 28) if args.mode == 0 else images.reshape(-1, 1, 28, 28)
         inputs = Variable(img)
         ##############################
         targets = labels.numpy()
@@ -97,8 +99,7 @@ with torch.no_grad():
     for test_batch in test_loader:
         images, labels = test_batch
         ###########################
-        if args.mode == 0: images = images.reshape(-1, 28 * 28)
-        if args.mode == 1: images = images.reshape(-1, 1, 28, 28)
+        images = images.reshape(-1, 28 * 28) if args.mode == 0 else images.reshape(-1, 1, 28, 28)
         ###########################
         labels = labels
         outputs = model(images)
