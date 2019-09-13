@@ -44,7 +44,8 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
                                           shuffle=False)
 ##################################
 ###CONFLICT ZONE 2
-model = LeNet5()
+if args.mode==0: model = FCNet()
+if args.mode==1: model = LeNet5()
 ##################################
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum = 0.9)
