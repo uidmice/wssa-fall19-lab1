@@ -55,8 +55,10 @@ for epoch in range(num_epochs):
     print("Epoch:", epoch)
     for batch_num, train_batch in enumerate(train_loader):
         images, labels = train_batch
+        if args.mode == 0: img = images.reshape(-1, 28 * 28)
+        if args.mode == 1: img = images.reshape(-1, 1, 28, 28)
         ############################
-        inputs = Variable(images.reshape(-1, 1,28,28))
+        inputs = Variable(img)
         ############################
         targets = Variable(labels)
         optimizer.zero_grad()
@@ -70,8 +72,10 @@ for epoch in range(num_epochs):
     for batch_num, training_batch in enumerate(train_loader):
         num_batches += 1
         images, labels = training_batch
+        if args.mode == 0: img = images.reshape(-1, 28 * 28)
+        if args.mode == 1: img = images.reshape(-1, 1, 28, 28)
         ##############################
-        inputs = Variable(images.reshape(-1, 1,28,28))
+        inputs = Variable(img)
         ##############################
         targets = labels.numpy()
         inputs = Variable(inputs)
@@ -87,14 +91,14 @@ for epoch in range(num_epochs):
 
 
 ## test on testing dataset
-
 with torch.no_grad():
     correct = 0
     total = 0
     for test_batch in test_loader:
         images, labels = test_batch
         ###########################
-        images = images.reshape(-1, 1,28,28)
+        if args.mode == 0: images = images.reshape(-1, 28 * 28)
+        if args.mode == 1: images = images.reshape(-1, 1, 28, 28)
         ###########################
         labels = labels
         outputs = model(images)
