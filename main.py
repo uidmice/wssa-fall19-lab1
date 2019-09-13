@@ -50,3 +50,16 @@ if args.mode==1: model = LeNet5()
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.SGD(model.parameters(), lr=0.001, momentum = 0.9)
 training_accuracy = []
+for epoch in range(num_epochs):
+    print("Epoch:", epoch)
+    for batch_num, train_batch in enumerate(train_loader):
+        images, labels = train_batch
+        ############################
+        inputs = Variable(images.reshape(-1, 1,28,28))
+        ############################
+        targets = Variable(labels)
+        optimizer.zero_grad()
+        output = model(inputs)
+        loss = criterion(output, labels)
+        loss.backward()
+        optimizer.step()
