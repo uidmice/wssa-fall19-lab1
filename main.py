@@ -25,7 +25,7 @@ num_epochs = 2
 #################################
 ###CONFLICT ZONE 1
 if args.mode==0: transformImg = torchvision.transforms.Compose([torchvision.transforms.ToTensor() ])
-elif args.mode==1: transformImg = torchvision.transforms.Compose([torchvision.transforms.ToTensor(),torchvision.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+elif args.mode==1: transformImg = torchvision.transforms.Compose([torchvision.transforms.ToTensor(),torchvision.transforms.Normalize((0.5,), (0.5,))])
 else:
     print("Unidentified mode.")
     sys.exit()
