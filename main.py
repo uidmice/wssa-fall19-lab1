@@ -3,6 +3,7 @@ import argparse
 
 #THIRD PARTY IMPORTS
 import torch
+import matplotlib.pyplot as plt
 import numpy as np
 import torch.nn as nn
 import torch.optim
@@ -21,7 +22,7 @@ parser.add_argument('--mode', type=int, help="Enter mode = 0 for Fully connected
 args = parser.parse_args()
 
 batch_size = 32
-num_epochs = 2
+num_epochs = 10
 #################################
 ###CONFLICT ZONE 1
 if args.mode==0: transformImg = torchvision.transforms.Compose([torchvision.transforms.ToTensor() ])
@@ -86,8 +87,8 @@ for epoch in range(num_epochs):
         predictions = np.argmax(outputs, axis = 1)
         accuracy += accuracy_score(targets, predictions)
         final_acc = accuracy/num_batches
-        training_accuracy.append(final_acc)
 
+    training_accuracy.append(final_acc)
     print("Epoch: {} Training Accuracy: {}".format(epoch, final_acc*100))
 
 
@@ -110,6 +111,8 @@ with torch.no_grad():
     print('Accuracy of the network on the 10000 test images: {} %'.format(100 * correct / total))
 
 
-
-
 ##OPTIONAL display epochs and accuracy using Matplotlib
+plt.plot(range(num_epochs), training_accuracy)
+plt.xlabel('# of Epochs')
+plt.ylabel('Accuracy (%)')
+plt.show()
