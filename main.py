@@ -88,7 +88,7 @@ for epoch in range(num_epochs):
         accuracy += accuracy_score(targets, predictions)
         final_acc = accuracy/num_batches
 
-    training_accuracy.append(final_acc)
+    training_accuracy.append(final_acc*100)
     print("Epoch: {} Training Accuracy: {}".format(epoch, final_acc*100))
 
 
